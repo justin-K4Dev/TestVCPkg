@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Logic">
+      <UniqueIdentifier>{b731caeb-4a58-476f-b7f1-4c855ecf7f98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Common">
+      <UniqueIdentifier>{53bddfda-954f-4d59-b31c-ef7a4adaaff3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="with-zlib.cpp">
+      <Filter>Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>0.Common</Filter>
+    </ClCompile>
+    <ClCompile Include="with_boost.cpp">
+      <Filter>Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="with_openssl.cpp">
+      <Filter>Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="with_curl.cpp">
+      <Filter>Logic</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Function.h" />
+    <ClInclude Include="stdafx.h">
+      <Filter>0.Common</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>0.Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="install-vcpkg-classic.ps1" />
+    <None Include="Classic.Build.props" />
+    <None Include="Directory.Build.targets" />
+    <None Include="uninstall-vcpkg-classic.ps1" />
+    <None Include="patch-vcpkg-classic.ps1" />
+  </ItemGroup>
+</Project>

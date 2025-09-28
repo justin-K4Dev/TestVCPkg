@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="vcpkg.json" />
+    <None Include="Directory.Build.props" />
+    <None Include="install-vcpkg-overlay.ps1" />
+    <None Include="vcpkg.env-overlay.props" />
+    <None Include="Directory.Build.targets" />
+    <None Include="vcpkg-configuraion.json" />
+    <None Include="overlays\ports\zlib\portfile.cmake">
+      <Filter>overlays\ports\zlib</Filter>
+    </None>
+    <None Include="overlays\ports\zlib\vcpkg.json">
+      <Filter>overlays\ports\zlib</Filter>
+    </None>
+    <None Include="overlays\triplets\x64-windows-static-md.cmake">
+      <Filter>overlays\triplets</Filter>
+    </None>
+    <None Include="overlays\triplets\x64-windows-static-mt.cmake">
+      <Filter>overlays\triplets</Filter>
+    </None>
+    <None Include="uninstall-vcpkg-overlay.ps1" />
+    <None Include="patch-vcpkg-overlay.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Logic">
+      <UniqueIdentifier>{1fc08439-da2c-4817-a328-bb0edc1f3597}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Common">
+      <UniqueIdentifier>{b5ab2483-56ea-4073-a245-ba521d025d64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="overlays">
+      <UniqueIdentifier>{c5608db3-3aa0-4702-a373-594113048558}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="overlays\ports">
+      <UniqueIdentifier>{9ad72dbe-8050-47ec-ba53-479a3dbc693f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="overlays\triplets">
+      <UniqueIdentifier>{e06809c0-2a97-4ab6-9846-47043c0fa192}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="overlays\ports\zlib">
+      <UniqueIdentifier>{4ace395a-956e-4b3b-a50d-fdc1fee1723c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="with-zlib.cpp">
+      <Filter>Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <Filter>0.Common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Function.h" />
+    <ClInclude Include="stdafx.h">
+      <Filter>0.Common</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>0.Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+</Project>

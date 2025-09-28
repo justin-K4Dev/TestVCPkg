@@ -1,0 +1,146 @@
+﻿<Project>
+	
+	<!-- 자동 보정: 주요 환경변수 기본값 채우기 -->
+	<PropertyGroup>
+		<!-- VCPKG_ROOT => VcpkgRoot 채움 -->
+		<VcpkgRoot Condition="'$(VcpkgRoot)'=='' and 
+				              '$(VCPKG_ROOT)'!=''">$([System.String]::Copy('$(VCPKG_ROOT)').TrimEnd('\','/'))</VcpkgRoot>
+
+		<!-- $(VcpkgRoot)installed\ => VcpkgInstalledDir 채움 -->
+		<VcpkgInstalledDir Condition="'$(VcpkgInstalledDir)'=='' and 
+						              '$(VcpkgEnableManifest)'!='true' and 
+									  '$(VcpkgRoot)'!=''">$(VcpkgRoot)\installed\</VcpkgInstalledDir>
+
+		<!-- $(VcpkgInstalledDir)$(VcpkgTriplet)\ => VcpkgCurrentInstalledDir 채움 -->
+		<VcpkgCurrentInstalledDir Condition="'$(VcpkgCurrentInstalledDir)'=='' and 
+								             '$(VcpkgInstalledDir)'!='' and 
+											 '$(VcpkgTriplet)'!=''">$(VcpkgInstalledDir)$(VcpkgTriplet)\</VcpkgCurrentInstalledDir>
+
+	</PropertyGroup>
+
+	
+	<!-- vcpkg 주요 정보 검증 -->
+	<Target Name="EnsureVcpkgPath" BeforeTargets="PrepareForBuild">
+		
+		<!-- 디버그 출력 -->
+		<Message Importance="High" Text="VCPKG_ROOT: $(VCPKG_ROOT)" />
+		<Message Importance="High" Text="VcpkgEnableManifest: $(VcpkgEnableManifest)" />		
+		<Message Importance="High" Text="VcpkgRoot: $(VcpkgRoot)" />
+		<Message Importance="High" Text="VcpkgInstalledDir: $(VcpkgInstalledDir)" />
+		<Message Importance="High" Text="VcpkgTriplet: $(VcpkgTriplet)" />
+		<Message Importance="High" Text="VcpkgCurrentInstalledDir: $(VcpkgCurrentInstalledDir)" />
+		<Message Importance="High" Text="WinSystemLibs: $(WinSystemLibs)" />
+		<Message Importance="High" Text="VcpkgLibsRel: $(VcpkgLibsRel)" />
+		<Message Importance="High" Text="VcpkgLibsDbg: $(VcpkgLibsDbg)" />		
+		
+		<!-- 1) 클래식 모드 이므로 VcpkgEnableManifest == false 인지 체크 -->
+		<Error Condition="'$(VcpkgEnableManifest)'!='false'"
+			   Text="[VCPKG] 오류: VcpkgEnableManifest 값이 false가 아닙니다. 프로젝트/props에서 &lt;VcpkgEnableManifest&gt;false&lt;/VcpkgEnableManifest&gt; 를 지정하세요." />
+
+		<!-- 2) VcpkgRoot 설정 체크 -->
+		<Error Condition="'$(VcpkgRoot)'==''"
+			   Text="[VCPKG] 오류: 클래식 모드에서 VcpkgRoot가 비었습니다. VCPKG_ROOT 환경변수를 설정하거나, 프로젝트/props에서 &lt;VcpkgRoot&gt;...&lt;/VcpkgRoot&gt; 를 지정하세요." />
+
+		<!-- 3) VcpkgInstalledDir 설정 체크 -->
+		<Error Condition="'$(VcpkgInstalledDir)'==''"
+			   Text="[VCPKG] 오류: VcpkgInstalledDir 값을 결정하지 못했습니다. 클래식 모드: $(VcpkgRoot)installed\\ 로 설정하세요." />
+
+		<!-- 4) VcpkgTriplet 설정 체크 -->
+		<Error Condition="'$(VcpkgTriplet)'==''"
+			   Text="[VCPKG] 오류: VcpkgTriplet 값이 비어 있습니다. (예: x64-windows, x64-windows-static) 프로젝트 속성 → vcpkg 페이지에서 Triplet을 설정하거나, /p:VcpkgTriplet=... 로 지정하세요." />		
+		
+
+		<!-- 경로 구조 검증 -->
+		<Error   Condition="'$(VcpkgCurrentInstalledDir)'!='' and !Exists('$(VcpkgCurrentInstalledDir)include')"
+				 Text="[VCPKG] 오류: 유효하지 않은 설치 경로입니다: $(VcpkgCurrentInstalledDir) 기대 경로가 없습니다: $(VcpkgCurrentInstalledDir)include" />
+		<Warning Condition="'$(VcpkgCurrentInstalledDir)'!='' and !Exists('$(VcpkgCurrentInstalledDir)lib')"
+				 Text="[VCPKG] 경고: Release lib 폴더가 없습니다: $(VcpkgCurrentInstalledDir)lib" />
+		<Warning Condition="'$(VcpkgCurrentInstalledDir)'!='' and !Exists('$(VcpkgCurrentInstalledDir)debug\lib')"
+				 Text="[VCPKG] 경고: Debug lib 폴더가 없습니다: $(VcpkgCurrentInstalledDir)debug\lib" />
+	</Target>
+	
+	<!-- 설치 경로 산정 -->
+	<PropertyGroup>
+		<!-- 최종 소비 경로 -->
+		<VcpkgInc>$(VcpkgCurrentInstalledDir)include</VcpkgInc>
+		<VcpkgLibDirRel>$(VcpkgCurrentInstalledDir)lib</VcpkgLibDirRel>
+		<VcpkgLibDirDbg>$(VcpkgCurrentInstalledDir)debug\lib</VcpkgLibDirDbg>  
+	</PropertyGroup>
+	
+	<!-- 아이템을 문자열로 합치기 -->
+	<PropertyGroup>	  
+		<VcpkgLibsRelToAdd>$(VcpkgLibsRel)$(WinSystemLibs)</VcpkgLibsRelToAdd>
+		<VcpkgLibsDbgToAdd>$(VcpkgLibsDbg)$(WinSystemLibs)</VcpkgLibsDbgToAdd>
+	</PropertyGroup>
+
+	<!-- 설정된 경로 덤프 -->
+	<Target Name="DumpVcpkgPaths" BeforeTargets="PrepareForBuild">
+		<Message Importance="High" Text="[VCPKG] HeaderInclude(VcpkgInc)=$(VcpkgInc)" />
+		<Message Importance="High" Text="[VCPKG] LibDir-Release(VcpkgLibDirRel)=$(VcpkgLibDirRel)" />
+		<Message Importance="High" Text="[VCPKG] LibDir-Debug(VcpkgLibDirDbg)=$(VcpkgLibDirDbg)" />
+		<Message Importance="High" Text="[VCPKG] Libs-Release(VcpkgLibsRelToAdd)=$(VcpkgLibsRelToAdd)" />
+		<Message Importance="High" Text="[VCPKG] Libs-Debug(VcpkgLibsDbgToAdd)=$(VcpkgLibsDbgToAdd)" />	  
+	</Target>
+
+	<!-- 1) Include 경로 추가 -->
+	<ItemDefinitionGroup>
+		<ClCompile>
+			<AdditionalIncludeDirectories Condition="'$(VcpkgInc)'!=''">
+				$(VcpkgInc);%(AdditionalIncludeDirectories)
+			</AdditionalIncludeDirectories>
+		</ClCompile>
+	</ItemDefinitionGroup>
+
+	<!-- 2) Lib 경로 추가 -->
+	<ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+		<Link>
+			<AdditionalLibraryDirectories Condition="'$(VcpkgLibDirRel)'!=''">
+				$(VcpkgLibDirRel);%(AdditionalLibraryDirectories)
+			</AdditionalLibraryDirectories>
+		</Link>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+		<Link>
+			<AdditionalLibraryDirectories Condition="'$(VcpkgLibDirDbg)'!=''">
+				$(VcpkgLibDirDbg);%(AdditionalLibraryDirectories)
+			</AdditionalLibraryDirectories>
+		</Link>
+	</ItemDefinitionGroup>
+	
+
+	<!-- AdditionalDependencies 에 추가 -->
+	<Choose>
+		<When Condition="'$(Configuration)'=='Release' and '$(VcpkgLibsRelToAdd)'!=''">
+			<ItemDefinitionGroup>
+				<Link>
+					<AdditionalDependencies>$(VcpkgLibsRelToAdd)%(AdditionalDependencies)</AdditionalDependencies>
+				</Link>
+			</ItemDefinitionGroup>
+		</When>
+		<Otherwise>
+			<ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+				<Link>
+					<AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+				</Link>
+			</ItemDefinitionGroup>
+		</Otherwise>
+	</Choose>
+
+	<Choose>
+		<When Condition="'$(Configuration)'=='Debug' and '$(VcpkgLibsDbgToAdd)'!=''">
+			<ItemDefinitionGroup>
+				<Link>
+					<AdditionalDependencies>$(VcpkgLibsDbgToAdd)%(AdditionalDependencies)</AdditionalDependencies>
+				</Link>
+			</ItemDefinitionGroup>
+		</When>
+		<Otherwise>
+			<ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+				<Link>
+					<AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+				</Link>
+			</ItemDefinitionGroup>
+		</Otherwise>
+	</Choose>
+	
+</Project>

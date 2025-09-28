@@ -1,0 +1,19 @@
+<Project>
+
+	<!-- 먼저 vcpkg.env-overlay.props 가져오기 (오버레이 시도) -->
+	<Import Project="$(MSBuildThisFileDirectory)vcpkg.env-overlay.props"
+			Condition="'$(MSBuildThisFileDirectory)' != '' and Exists('$(MSBuildThisFileDirectory)vcpkg.env-overlay.props')" />
+
+
+	<!-- Windows 라이브러리 대상 -->
+	<PropertyGroup>
+	</PropertyGroup>
+
+	<!-- 주요 로직 라이브러리 대상 -->
+	<PropertyGroup>
+		<!-- 개별 .lib 파일명, 필요 없으면 비워두기 OK -->
+		<VcpkgOverLibsRel>zlib.lib;</VcpkgOverLibsRel>
+		<VcpkgOverLibsDbg>zlibd.lib;</VcpkgOverLibsDbg>
+	</PropertyGroup>
+
+</Project>

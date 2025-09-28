@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="vcpkg.json" />
+    <None Include="Directory.Build.props" />
+    <None Include="install-vcpkg-project.ps1" />
+    <None Include="vcpkg.env-project.props" />
+    <None Include="Directory.Build.targets" />
+    <None Include="uninstall-vcpkg-project.ps1" />
+    <None Include="patch-vcpkg-project.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Logic">
+      <UniqueIdentifier>{1fc08439-da2c-4817-a328-bb0edc1f3597}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Common">
+      <UniqueIdentifier>{b5ab2483-56ea-4073-a245-ba521d025d64}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="with-zlib.cpp">
+      <Filter>Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <Filter>0.Common</Filter>
+    </ClCompile>
+    <ClCompile Include="with_curl.cpp">
+      <Filter>Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="with_openssl.cpp">
+      <Filter>Logic</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Function.h" />
+    <ClInclude Include="stdafx.h">
+      <Filter>0.Common</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>0.Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,17 @@
+<Project>
+
+	<!-- 1) 솔루션 vcpkg 환경 불러오기 -->
+	<Import Project="$(MSBuildThisFileDirectory)vcpkg.env-solution.props"
+            Condition="Exists('$(MSBuildThisFileDirectory)vcpkg.env-solution.props')" />
+
+
+	<!-- 2) 솔루션 기본 링크 대상(필요 시 프로젝트에서 오버라이드 가능) -->
+	<PropertyGroup>
+
+		<!-- 개별 .lib 파일명(패턴 아님). 필요 없으면 비워두기 OK -->
+		<VcpkgSolLibsRel>boost_filesystem-vc143-mt-x64-1_88.lib;</VcpkgSolLibsRel> <!-- 예: zlib.lib;fmt.lib; -->
+		<VcpkgSolLibsDbg>boost_filesystem-vc143-mt-gd-x64-1_88.lib;</VcpkgSolLibsDbg> <!-- 예: zlibd.lib;fmtd.lib; -->
+	  
+	</PropertyGroup>
+
+</Project>

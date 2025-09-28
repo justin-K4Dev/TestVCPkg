@@ -1,0 +1,21 @@
+<Project>
+
+	<Target Name="ClassicBuildProps_Imported" BeforeTargets="PrepareForBuild">
+		<Message Text="Classic.Build.props imported: $(MSBuildThisFileFullPath)"
+				 Importance="High" />
+	</Target>
+
+	<!-- Windows 라이브러리 대상 -->
+	<PropertyGroup>
+		<!-- WinSock/SSPI/Cert/IF/IDN -->
+		<WinSystemLibs>Ws2_32.lib;Iphlpapi.lib;Secur32.lib;Crypt32.lib;Normaliz.lib;</WinSystemLibs>
+	</PropertyGroup>
+
+	<!-- 주요 로직 라이브러리 대상 -->
+	<PropertyGroup>
+		<!-- 개별 .lib 파일명, 필요 없으면 비워두기 OK -->
+		<VcpkgLibsRel>libcurl.lib;libssl.lib;libcrypto.lib;zlib.lib;</VcpkgLibsRel>
+		<VcpkgLibsDbg>libcurl-d.lib;libssl.lib;libcrypto.lib;zlibd.lib;</VcpkgLibsDbg>
+	</PropertyGroup>
+
+</Project>

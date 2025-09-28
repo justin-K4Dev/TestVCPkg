@@ -1,0 +1,19 @@
+{
+  "name": "manifest-project",
+  "version": "0.0.1",
+  "builtin-baseline": "6ecbbbdf31cba47aafa7cf6189b1e73e10ac61f8",
+  "dependencies": [
+    "zlib",
+    "openssl",
+    {
+      "name": "curl",
+      "default-features": false,
+      "features": [ "ssl", "schannel", "sspi" ]
+    }
+  ],
+  "overrides": [
+    { "name": "zlib",    "version-string": "1.2.11" },
+    { "name": "openssl", "version-string": "3.1.1"  },
+    { "name": "curl",    "version-string": "8.7.1"  }
+  ]
+}

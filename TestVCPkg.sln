@@ -1,0 +1,99 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36301.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Doc", "0. Doc", "{C8D5274F-AC00-46C7-1F8D-E88E81087A52}"
+	ProjectSection(SolutionItems) = preProject
+		Doc\vcpkg-overview.md = Doc\vcpkg-overview.md
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ManifestMode-Project", "ManifestMode-Project\ManifestMode-Project.vcxproj", "{CC4237FA-D52D-48CF-B90F-BD97C234267E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ManifestMode-Solution", "ManifestMode-Solution\ManifestMode-Solution.vcxproj", "{2086E3AE-6AFB-4C58-98DE-C651457AAA22}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{25879EB3-CB0D-41CE-9C51-807033E04E7E}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		install-vcpkg-solution.ps1 = install-vcpkg-solution.ps1
+		patch-vcpkg-solution.ps1 = patch-vcpkg-solution.ps1
+		uninstall-vcpkg-solution.ps1 = uninstall-vcpkg-solution.ps1
+		vcpkg.env-solution.props = vcpkg.env-solution.props
+		vcpkg.json = vcpkg.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Classic", "Classic", "{34231E9E-83C5-4B2B-ADD1-DC21AF7FE6B9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Manifest", "Manifest", "{98E6DD8E-020C-4FF3-B11B-5B5A472782AC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClassicMode-Basic", "ClassicMode-Basic\ClassicMode-Basic.vcxproj", "{1D4BC86A-3826-4BF9-80D2-37C95CC83188}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{F7703C88-CEC8-4B35-B0AE-31753D22F94B}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\cleanup-vcpkg-classic.ps1 = Scripts\cleanup-vcpkg-classic.ps1
+		Scripts\cleanup-vcpkg-manifest.ps1 = Scripts\cleanup-vcpkg-manifest.ps1
+		Scripts\setup-vcpkg-classic.ps1 = Scripts\setup-vcpkg-classic.ps1
+		Scripts\setup-vcpkg-manifest.ps1 = Scripts\setup-vcpkg-manifest.ps1
+		Scripts\upgrade-vcpkg-classic.ps1 = Scripts\upgrade-vcpkg-classic.ps1
+		Scripts\upgrade-vcpkg-manifest.ps1 = Scripts\upgrade-vcpkg-manifest.ps1
+		Scripts\vcpkg-helper.psm1 = Scripts\vcpkg-helper.psm1
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ManifestMode-Overlay", "ManifestMode-Overlay\ManifestMode-Overlay.vcxproj", "{DD9E5314-5C61-4698-BCB6-CF0F1B9442F9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC4237FA-D52D-48CF-B90F-BD97C234267E}.Debug|x64.ActiveCfg = Debug|x64
+		{CC4237FA-D52D-48CF-B90F-BD97C234267E}.Debug|x64.Build.0 = Debug|x64
+		{CC4237FA-D52D-48CF-B90F-BD97C234267E}.Debug|x86.ActiveCfg = Debug|Win32
+		{CC4237FA-D52D-48CF-B90F-BD97C234267E}.Debug|x86.Build.0 = Debug|Win32
+		{CC4237FA-D52D-48CF-B90F-BD97C234267E}.Release|x64.ActiveCfg = Release|x64
+		{CC4237FA-D52D-48CF-B90F-BD97C234267E}.Release|x64.Build.0 = Release|x64
+		{CC4237FA-D52D-48CF-B90F-BD97C234267E}.Release|x86.ActiveCfg = Release|Win32
+		{CC4237FA-D52D-48CF-B90F-BD97C234267E}.Release|x86.Build.0 = Release|Win32
+		{2086E3AE-6AFB-4C58-98DE-C651457AAA22}.Debug|x64.ActiveCfg = Debug|x64
+		{2086E3AE-6AFB-4C58-98DE-C651457AAA22}.Debug|x64.Build.0 = Debug|x64
+		{2086E3AE-6AFB-4C58-98DE-C651457AAA22}.Debug|x86.ActiveCfg = Debug|Win32
+		{2086E3AE-6AFB-4C58-98DE-C651457AAA22}.Debug|x86.Build.0 = Debug|Win32
+		{2086E3AE-6AFB-4C58-98DE-C651457AAA22}.Release|x64.ActiveCfg = Release|x64
+		{2086E3AE-6AFB-4C58-98DE-C651457AAA22}.Release|x64.Build.0 = Release|x64
+		{2086E3AE-6AFB-4C58-98DE-C651457AAA22}.Release|x86.ActiveCfg = Release|Win32
+		{2086E3AE-6AFB-4C58-98DE-C651457AAA22}.Release|x86.Build.0 = Release|Win32
+		{1D4BC86A-3826-4BF9-80D2-37C95CC83188}.Debug|x64.ActiveCfg = Debug|x64
+		{1D4BC86A-3826-4BF9-80D2-37C95CC83188}.Debug|x64.Build.0 = Debug|x64
+		{1D4BC86A-3826-4BF9-80D2-37C95CC83188}.Debug|x86.ActiveCfg = Debug|Win32
+		{1D4BC86A-3826-4BF9-80D2-37C95CC83188}.Debug|x86.Build.0 = Debug|Win32
+		{1D4BC86A-3826-4BF9-80D2-37C95CC83188}.Release|x64.ActiveCfg = Release|x64
+		{1D4BC86A-3826-4BF9-80D2-37C95CC83188}.Release|x64.Build.0 = Release|x64
+		{1D4BC86A-3826-4BF9-80D2-37C95CC83188}.Release|x86.ActiveCfg = Release|Win32
+		{1D4BC86A-3826-4BF9-80D2-37C95CC83188}.Release|x86.Build.0 = Release|Win32
+		{DD9E5314-5C61-4698-BCB6-CF0F1B9442F9}.Debug|x64.ActiveCfg = Debug|x64
+		{DD9E5314-5C61-4698-BCB6-CF0F1B9442F9}.Debug|x64.Build.0 = Debug|x64
+		{DD9E5314-5C61-4698-BCB6-CF0F1B9442F9}.Debug|x86.ActiveCfg = Debug|Win32
+		{DD9E5314-5C61-4698-BCB6-CF0F1B9442F9}.Debug|x86.Build.0 = Debug|Win32
+		{DD9E5314-5C61-4698-BCB6-CF0F1B9442F9}.Release|x64.ActiveCfg = Release|x64
+		{DD9E5314-5C61-4698-BCB6-CF0F1B9442F9}.Release|x64.Build.0 = Release|x64
+		{DD9E5314-5C61-4698-BCB6-CF0F1B9442F9}.Release|x86.ActiveCfg = Release|Win32
+		{DD9E5314-5C61-4698-BCB6-CF0F1B9442F9}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CC4237FA-D52D-48CF-B90F-BD97C234267E} = {98E6DD8E-020C-4FF3-B11B-5B5A472782AC}
+		{2086E3AE-6AFB-4C58-98DE-C651457AAA22} = {98E6DD8E-020C-4FF3-B11B-5B5A472782AC}
+		{1D4BC86A-3826-4BF9-80D2-37C95CC83188} = {34231E9E-83C5-4B2B-ADD1-DC21AF7FE6B9}
+		{F7703C88-CEC8-4B35-B0AE-31753D22F94B} = {25879EB3-CB0D-41CE-9C51-807033E04E7E}
+		{DD9E5314-5C61-4698-BCB6-CF0F1B9442F9} = {98E6DD8E-020C-4FF3-B11B-5B5A472782AC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FA8A1060-B450-4EDA-B008-F391258C7CFB}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,21 @@
+<Project>
+
+	<!-- 먼저 vcpkg.env-project.props 가져오기 (프로젝트 시도) -->
+	<Import Project="$(MSBuildThisFileDirectory)vcpkg.env-project.props"
+			Condition="'$(MSBuildThisFileDirectory)' != '' and Exists('$(MSBuildThisFileDirectory)vcpkg.env-project.props')" />
+
+
+	<!-- Windows 라이브러리 대상 -->
+	<PropertyGroup>
+		<!-- WinSock/SSPI/Cert/IF/IDN -->
+		<WinSystemLibs>Ws2_32.lib;Iphlpapi.lib;Secur32.lib;Crypt32.lib;Bcrypt.lib;Advapi32.lib;Normaliz.lib;</WinSystemLibs>
+	</PropertyGroup>
+
+	<!-- 주요 로직 라이브러리 대상 -->
+	<PropertyGroup>
+		<!-- 개별 .lib 파일명, 필요 없으면 비워두기 OK -->
+		<VcpkgProjLibsRel>libcurl.lib;libssl.lib;libcrypto.lib;zlib.lib;</VcpkgProjLibsRel>
+		<VcpkgProjLibsDbg>libcurl-d.lib;libssl.lib;libcrypto.lib;zlibd.lib;</VcpkgProjLibsDbg>
+	</PropertyGroup>
+
+</Project>

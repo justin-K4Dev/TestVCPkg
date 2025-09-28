@@ -1,0 +1,7 @@
+<Project>
+
+	<!-- 먼저 Directory.Build.props 가져오기 (솔루션 시도) -->
+	<Import Project="$(SolutionDir)Directory.Build.props"
+			Condition="'$(SolutionDir)' != '' and Exists('$(SolutionDir)Directory.Build.props')" />
+
+</Project>

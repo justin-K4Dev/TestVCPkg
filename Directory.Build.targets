@@ -1,0 +1,117 @@
+﻿<Project>
+
+    <!-- Triplet 미설정시 빌드 실패 -->
+    <Target Name="EnsureVcpkgTriplet" BeforeTargets="PrepareForBuild">
+	    <Message Text="VcpkgTriplet : $(VcpkgTriplet)"
+		         Importance="High" /> 
+        <Error Condition="'$(VcpkgTriplet)'==''"
+               Text="[VCPKG] 오류: VcpkgTriplet 값이 비어 있습니다. (예: x64-windows, x64-windows-static 등등)
+프로젝트 속성 → vcpkg 페이지에서 Triplet을 설정하거나, /p:VcpkgTriplet=... 로 지정하세요." />
+    </Target>
+
+    <!-- 바스켓 전용 경로 산정 -->
+    <PropertyGroup Condition="'$(VcpkgTriplet)'!=''">
+        <!-- 바스켓 설정 (static | dynamic) -->
+        <_Basket>dynamic</_Basket>
+        <_Basket Condition="$([System.String]::Copy('$(VcpkgTriplet)').ToLower().Contains('-static'))">static</_Basket>
+
+        <!-- 바스켓 전용 루트 (예: vcpkg_installed\static\<triplet>\ ) -->
+        <_BasketRoot>$(VcpkgSolInstalledDir)$(_Basket)\$(VcpkgTriplet)\</_BasketRoot>
+
+        <!-- 최종 소비 경로 -->
+        <VcpkgSolInc>$(_BasketRoot)include</VcpkgSolInc>
+        <VcpkgSolLibDirRel>$(_BasketRoot)lib</VcpkgSolLibDirRel>
+        <VcpkgSolLibDirDbg>$(_BasketRoot)debug\lib</VcpkgSolLibDirDbg>  
+    </PropertyGroup>
+
+
+		
+    <!-- 아이템을 문자열로 합치기 -->
+    <PropertyGroup>
+	    <VcpkgSolLibsRelToAdd>$(VcpkgSolLibsRel)</VcpkgSolLibsRelToAdd>
+	    <VcpkgSolLibsDbgToAdd>$(VcpkgSolLibsDbg)</VcpkgSolLibsDbgToAdd>
+    </PropertyGroup>
+
+	<!-- 설정된 바스켓/경로 덤프 -->
+    <Target Name="DumpVcpkgBasketPaths" BeforeTargets="PrepareForBuild"
+		    Condition="'$(VcpkgTriplet)'!=''">
+	    <Message Importance="High" Text="[VCPKG] Triplet(VcpkgTriplet)=$(VcpkgTriplet)" />
+	    <Message Importance="High" Text="[VCPKG] Basket(_Basket)=$(_Basket)" />
+	    <Message Importance="High" Text="[VCPKG] InstalledDir(VcpkgSolInstalledDir)=$(VcpkgSolInstalledDir)" />
+	    <Message Importance="High" Text="[VCPKG] BasketRoot(_BasketRoot)=$(_BasketRoot)" />
+	    <Message Importance="High" Text="[VCPKG] HeaderInclude(VcpkgSolInc)=$(VcpkgSolInc)" />
+	    <Message Importance="High" Text="[VCPKG] LibDir-Release(VcpkgSolLibDirRel)=$(VcpkgSolLibDirRel)" />
+	    <Message Importance="High" Text="[VCPKG] LibDir-Debug(VcpkgSolLibDirDbg)=$(VcpkgSolLibDirDbg)" />
+	    <Message Importance="High" Text="[VCPKG] Libs-Release(VcpkgSolLibsRelToAdd)=$(VcpkgSolLibsRelToAdd)" />
+	    <Message Importance="High" Text="[VCPKG] Libs-Debug(VcpkgSolLibsDbgToAdd)=$(VcpkgSolLibsDbgToAdd)" />	  
+
+	    <!-- 존재 여부도 함께 경고로 표시 (선택) -->
+	    <Warning Condition="!Exists('$(VcpkgSolInc)')"
+			     Text="[VCPKG] 경고: Include 경로가 존재하지 않습니다: $(VcpkgSolInc)" />
+	    <Warning Condition="!Exists('$(VcpkgSolLibDirRel)')"
+			     Text="[VCPKG] 경고: Release lib 경로가 존재하지 않습니다: $(VcpkgSolLibDirRel)" />
+	    <Warning Condition="!Exists('$(VcpkgSolLibDirDbg)')"
+			     Text="[VCPKG] 경고: Debug lib 경로가 존재하지 않습니다: $(VcpkgSolLibDirDbg)" />
+    </Target>
+
+    <!-- 1) Include 경로 추가 -->
+    <ItemDefinitionGroup>
+        <ClCompile>
+            <AdditionalIncludeDirectories Condition="'$(VcpkgSolInc)'!=''">
+                $(VcpkgSolInc);%(AdditionalIncludeDirectories)
+            </AdditionalIncludeDirectories>
+        </ClCompile>
+    </ItemDefinitionGroup>
+
+    <!-- 2) Lib 경로 추가 -->
+    <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+        <Link>
+            <AdditionalLibraryDirectories Condition="'$(VcpkgSolLibDirRel)'!=''">
+                $(VcpkgSolLibDirRel);%(AdditionalLibraryDirectories)
+            </AdditionalLibraryDirectories>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+        <Link>
+            <AdditionalLibraryDirectories Condition="'$(VcpkgSolLibDirDbg)'!=''">
+                $(VcpkgSolLibDirDbg);%(AdditionalLibraryDirectories)
+            </AdditionalLibraryDirectories>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <!-- 3) AdditionalDependencies 에 추가 -->
+    <Choose>
+        <When Condition="'$(Configuration)'=='Release' and '$(VcpkgSolLibsRelToAdd)'!=''">
+            <ItemDefinitionGroup>
+                <Link>
+                    <AdditionalDependencies>$(VcpkgSolLibsRelToAdd)%(AdditionalDependencies)</AdditionalDependencies>
+                </Link>
+      </ItemDefinitionGroup>
+    </When>
+        <Otherwise>
+            <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+                <Link>
+                    <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+                </Link>
+            </ItemDefinitionGroup>
+        </Otherwise>
+    </Choose>
+
+    <Choose>
+        <When Condition="'$(Configuration)'=='Debug' and '$(VcpkgSolLibsDbgToAdd)'!=''">
+            <ItemDefinitionGroup>
+                <Link>
+                    <AdditionalDependencies>$(VcpkgSolLibsDbgToAdd)%(AdditionalDependencies)</AdditionalDependencies>
+                </Link>
+            </ItemDefinitionGroup>
+        </When>
+        <Otherwise>
+            <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+                <Link>
+                    <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+                </Link>
+            </ItemDefinitionGroup>
+        </Otherwise>
+    </Choose>
+	
+</Project>
